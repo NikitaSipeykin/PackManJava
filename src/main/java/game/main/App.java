@@ -1,6 +1,6 @@
-package game;
+package game.main;
 
-import game.character.PacMan;
+import game.main.GamePanel;
 
 import javax.swing.*;
 
@@ -18,10 +18,10 @@ public class App {
     frame.setResizable(false);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    PacMan pacMan = new PacMan();
-    frame.add(pacMan);
+    GamePanel gamePanel = new GamePanel();
+    frame.add(gamePanel);
     frame.pack();
-    pacMan.requestFocus();
+    gamePanel.requestFocus();
     frame.setVisible(true);
   }
 }
