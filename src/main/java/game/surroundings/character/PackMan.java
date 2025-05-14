@@ -94,9 +94,18 @@ public class PackMan extends Entity {
         gamePanel.score += 10;
       }
     }
+
+    for (Block cherry :
+        gamePanel.cherrys) {
+      if (collision(this, cherry)){
+        foodEaten = cherry;
+        gamePanel.score += 50;
+      }
+    }
+    gamePanel.cherrys.remove(foodEaten);
     gamePanel.foods.remove(foodEaten);
 
-    if (gamePanel.foods.isEmpty()){
+    if (gamePanel.foods.isEmpty()&& gamePanel.cherrys.isEmpty()){
       gamePanel.loadMap();
       gamePanel.resetPosition();
     }

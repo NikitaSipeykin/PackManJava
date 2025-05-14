@@ -4,6 +4,7 @@ import game.surroundings.Block;
 import game.surroundings.Entity;
 import game.surroundings.character.Ghost;
 import game.surroundings.character.PackMan;
+import game.surroundings.food.Cherry;
 import game.surroundings.tile.Wall;
 
 import javax.swing.*;
@@ -22,7 +23,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
   public HashSet<Block> walls;
   public HashSet<Block> foods;
+  public HashSet<Block> cherrys;
   public HashSet<Entity> ghosts;
+
   public PackMan packMan;
 
   Timer gameLoop;
@@ -38,7 +41,7 @@ public class GamePanel extends JPanel implements ActionListener {
       "XXXXXXXXXXXXXXXXXXX",
       "X        X        X",
       "X XX XXX X XXX XX X",
-      "X                 X",
+      "X   C         C   X",
       "X XX X XXXXX X XX X",
       "X    X       X    X",
       "XXXX XXXX XXXX XXXX",
@@ -48,7 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
       "XXXX X XXXXX X XXXX",
       "OOOX X       X XOOO",
       "XXXX X XXXXX X XXXX",
-      "X        X        X",
+      "X   C    X    C   X",
       "X XX XXX X XXX XX X",
       "X  X     P     X  X",
       "XX X X XXXXX X X XX",
@@ -76,7 +79,9 @@ public class GamePanel extends JPanel implements ActionListener {
   public void loadMap(){
     walls = new HashSet<Block>();
     foods = new HashSet<Block>();
+    cherrys = new HashSet<Block>();
     ghosts = new HashSet<Entity>();
+
 
     for (int r = 0; r < rowCount; r++) {
       for (int c = 0; c < colCount; c++) {
@@ -108,6 +113,10 @@ public class GamePanel extends JPanel implements ActionListener {
         else if (tileMapChar == 'P') {
           packMan = new PackMan(this, x, y, keyHandler);
         }
+        else if (tileMapChar == 'C') {
+          Block cherry = new Cherry(this, x, y);
+          cherrys.add(cherry);
+        }
         else if (tileMapChar == ' ') {
           Block food = new Block(this, x + 14, y + 14, 4, 4 );
           foods.add(food);
@@ -134,6 +143,9 @@ public class GamePanel extends JPanel implements ActionListener {
     g.setColor(Color.white);
     for (Block food : foods) {
       g.fillRect(food.getX(), food.getY(), food.getWidth(), food.getHeight());
+    }
+    for (Block cherry : cherrys) {
+      g.drawImage(cherry.getCurrentImage(), cherry.getX(), cherry.getY(), cherry.getWidth(), cherry.getHeight(), null);
     }
 
     g.setFont(new Font("Arial", Font.PLAIN, 18));
