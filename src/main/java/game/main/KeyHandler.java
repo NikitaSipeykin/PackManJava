@@ -53,7 +53,7 @@ public class KeyHandler implements KeyListener {
     } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
       leftPressed = false;
     } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-      leftPressed = false;
+      rightPressed = false;
     }
   }
 }

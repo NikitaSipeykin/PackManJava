@@ -29,15 +29,19 @@ public class Entity extends Block{
   public void updateDirection(char direction){
     char previousDirection = this.direction;
     this.direction = direction;
+
+    changeSprite(this.direction);
     updateVelocity();
     this.x += this.velocityX;
     this.y += this.velocityY;
+
     for (Block wall : gamePanel.walls) {
       if (collision(this, wall)){
         this.x -= this.velocityX;
         this.y -= this.velocityY;
 
         this.direction = previousDirection;
+        changeSprite(this.direction);
         updateVelocity();
       }
     }
@@ -64,13 +68,6 @@ public class Entity extends Block{
     this.y = this.startY;
   }
 
-  public boolean collision(Entity a, Entity b){
-    return a.getX() < b.getX() + b.getWidth() &&
-        a.getX() + a.getWidth() > b.getX() &&
-        a.getY() < b.getY() + b.getHeight() &&
-        a.getY() + a.getHeight() > b.getY();
-  }
-
   public boolean collision(Entity a, Block b){
     return a.getX() < b.getX() + b.getWidth() &&
         a.getX() + a.getWidth() > b.getX() &&
@@ -78,29 +75,19 @@ public class Entity extends Block{
         a.getY() + a.getHeight() > b.getY();
   }
 
-  public int getVelocityX() {
-    return velocityX;
-  }
-
   public void setVelocityX(int velocityX) {
     this.velocityX = velocityX;
-  }
-
-  public int getVelocityY() {
-    return velocityY;
   }
 
   public void setVelocityY(int velocityY) {
     this.velocityY = velocityY;
   }
 
-  public char getDirection() {
-    return direction;
-  }
-
   public void update(){}
 
   public void move(){}
+
+  protected void changeSprite(char direction) {}
 
   public int randomDirection(){
     return random.nextInt(4);

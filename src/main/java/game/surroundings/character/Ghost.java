@@ -10,19 +10,15 @@ public class Ghost extends Entity {
 
   public Ghost(GamePanel gamePanel, int x, int y, String color) {
     super(gamePanel, x, y);
-
     setColor(color);
   }
 
   private void setColor(String color){
-    if (color.equals("red")){
-      currentImage = new ImageIcon(getClass().getResource("/enemy/redGhost.png")).getImage();
-    } else if (color.equals("orange")) {
-      currentImage = new ImageIcon(getClass().getResource("/enemy/orangeGhost.png")).getImage();
-    } else if (color.equals("pink")) {
-      currentImage = new ImageIcon(getClass().getResource("/enemy/pinkGhost.png")).getImage();
-    } else if (color.equals("blue")){
-      currentImage = new ImageIcon(getClass().getResource("/enemy/blueGhost.png")).getImage();
+    switch (color) {
+      case "red" -> currentImage = new ImageIcon(getClass().getResource("/enemy/redGhost.png")).getImage();
+      case "orange" -> currentImage = new ImageIcon(getClass().getResource("/enemy/orangeGhost.png")).getImage();
+      case "pink" -> currentImage = new ImageIcon(getClass().getResource("/enemy/pinkGhost.png")).getImage();
+      case "blue" -> currentImage = new ImageIcon(getClass().getResource("/enemy/blueGhost.png")).getImage();
     }
   }
 
@@ -31,7 +27,7 @@ public class Ghost extends Entity {
     x += velocityX;
     y += velocityY;
 
-    if (y == tileSize * 9 && direction != 'U' && direction != 'D'){
+    if (y == gamePanel.tileSize * 9 && direction != 'U' && direction != 'D'){
       this.updateDirection('U');
     }
 
@@ -44,9 +40,5 @@ public class Ghost extends Entity {
         break;
       }
     }
-  }
-
-  public int randomDirection(){
-    return random.nextInt(4);
   }
 }

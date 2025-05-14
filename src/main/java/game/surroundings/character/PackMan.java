@@ -33,22 +33,29 @@ public class PackMan extends Entity {
 
   @Override
   public void update(){
+    char newDirection;
     if(keyHandler.upPressed) {
-      direction = 'U';
-      currentImage = imageUp;
-      updateDirection(direction);
+      newDirection = 'U';
+      updateDirection(newDirection);
     } else if (keyHandler.downPressed) {
-      direction = 'D';
-      currentImage = imageDown;
-      updateDirection(direction);
+      newDirection = 'D';
+      updateDirection(newDirection);
     } else if (keyHandler.leftPressed) {
-      direction = 'L';
-      currentImage = imageLeft;
-      updateDirection(direction);
+      newDirection = 'L';
+      updateDirection(newDirection);
     } else if (keyHandler.rightPressed) {
-      direction = 'R';
-      currentImage = imageRight;
-      updateDirection(direction);
+      newDirection = 'R';
+      updateDirection(newDirection);
+    }
+  }
+
+  @Override
+  protected void changeSprite(char direction) {
+    switch (direction){
+      case 'U' ->       currentImage = imageUp;
+      case 'D' ->       currentImage = imageDown;
+      case 'L' ->       currentImage = imageLeft;
+      case 'R' ->       currentImage = imageRight;
     }
   }
 
@@ -89,9 +96,5 @@ public class PackMan extends Entity {
       gamePanel.loadMap();
       gamePanel.resetPosition();
     }
-  }
-
-  public int randomDirection(){
-    return random.nextInt(4);
   }
 }
