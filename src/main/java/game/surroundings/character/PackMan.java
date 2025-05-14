@@ -32,19 +32,23 @@ public class PackMan extends Entity {
   }
 
   @Override
-  protected void update(){
+  public void update(){
     if(keyHandler.upPressed) {
       direction = 'U';
       currentImage = imageUp;
+      updateDirection(direction);
     } else if (keyHandler.downPressed) {
       direction = 'D';
       currentImage = imageDown;
+      updateDirection(direction);
     } else if (keyHandler.leftPressed) {
       direction = 'L';
       currentImage = imageLeft;
+      updateDirection(direction);
     } else if (keyHandler.rightPressed) {
       direction = 'R';
       currentImage = imageRight;
+      updateDirection(direction);
     }
   }
 
@@ -53,16 +57,10 @@ public class PackMan extends Entity {
     x += velocityX;
     y += velocityY;
 
-    if (y == tileSize * 9 && direction != 'U' && direction != 'D'){
-      this.updateDirection('U');
-    }
-
     for (Block wall : gamePanel.walls) {
       if (collision(this, wall) || this.getX() <= 0 || this.getX() + this.getWidth() >= gamePanel.borderWidth) {
         x -= velocityX;
         y -= velocityY;
-        char newDirection = this.directions[random.nextInt(4)];
-        this.updateDirection(newDirection);
         break;
       }
     }
@@ -76,12 +74,8 @@ public class PackMan extends Entity {
         }
         gamePanel.resetPosition();
       }
-      if (ghost.getY() == tileSize * 9 && ghost.getDirection() != 'U' && ghost.getDirection() != 'D'){
-        ghost.updateDirection('U');
-      }
     }
 
-    //todo: move it to pacman
     Block foodEaten = null;
     for (Block food : gamePanel.foods) {
       if (collision(this, food)) {
@@ -95,20 +89,6 @@ public class PackMan extends Entity {
       gamePanel.loadMap();
       gamePanel.resetPosition();
     }
-  }
-
-  public boolean collision(Entity a, Entity b){
-    return a.getX() < b.getX() + b.getWidth() &&
-        a.getX() + a.getWidth() > b.getX() &&
-        a.getY() < b.getY() + b.getHeight() &&
-        a.getY() + a.getHeight() > b.getY();
-  }
-
-  public boolean collision(Entity a, Block b){
-    return a.getX() < b.getX() + b.getWidth() &&
-        a.getX() + a.getWidth() > b.getX() &&
-        a.getY() < b.getY() + b.getHeight() &&
-        a.getY() + a.getHeight() > b.getY();
   }
 
   public int randomDirection(){

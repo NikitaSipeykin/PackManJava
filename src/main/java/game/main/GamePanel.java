@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
-import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener {
   private final int rowCount = 21;
@@ -62,13 +61,13 @@ public class GamePanel extends JPanel implements ActionListener {
   public GamePanel(){
     setPreferredSize(new Dimension(borderWidth, borderHeight));
     setBackground(Color.black);
+    addKeyListener(keyHandler);
     setFocusable(true);
 
     loadMap();
     for (Entity ghost : ghosts) {
       char newDirection = ghost.directions[ghost.randomDirection()];
       ghost.updateDirection(newDirection);
-      ghost.move();
     }
     gameLoop = new Timer(50, this);
     gameLoop.start();
@@ -158,6 +157,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    packMan.move();
+    for (Entity ghost : ghosts) {
+      ghost.move();
+    }
     repaint();
     if (gameOver){
       gameLoop.stop();

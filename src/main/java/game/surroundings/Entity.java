@@ -32,8 +32,7 @@ public class Entity extends Block{
     updateVelocity();
     this.x += this.velocityX;
     this.y += this.velocityY;
-    for (Block wall :
-        gamePanel.walls) {
+    for (Block wall : gamePanel.walls) {
       if (collision(this, wall)){
         this.x -= this.velocityX;
         this.y -= this.velocityY;
@@ -99,7 +98,7 @@ public class Entity extends Block{
     return direction;
   }
 
-  protected void update(){}
+  public void update(){}
 
   public void move(){}
 
