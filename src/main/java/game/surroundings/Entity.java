@@ -9,12 +9,14 @@ public class Entity extends Block{
   protected int startX;
   protected int startY;
   protected char direction = 'U';
+  protected char failedDirection;
   protected int velocityX = 0;
   protected int velocityY = 0;
 
-  public Random random = new Random();
+  protected Random random = new Random();
+  protected Image imageUp, imageDown, imageLeft, imageRight;
+  protected boolean canTurn = false;
 
-  public Image imageUp, imageDown, imageLeft, imageRight;
   public char[] directions = {'U', 'D', 'L', 'R'};
 
   public Entity(GamePanel gamePanel, int x, int y) {
@@ -30,6 +32,7 @@ public class Entity extends Block{
     char previousDirection = this.direction;
     this.direction = direction;
 
+    canTurn = true;
     changeSprite(this.direction);
     updateVelocity();
     this.x += this.velocityX;
@@ -40,6 +43,8 @@ public class Entity extends Block{
         this.x -= this.velocityX;
         this.y -= this.velocityY;
 
+        canTurn = false;
+        failedDirection = this.direction;
         this.direction = previousDirection;
         changeSprite(this.direction);
         updateVelocity();

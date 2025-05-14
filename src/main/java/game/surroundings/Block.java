@@ -5,15 +5,15 @@ import game.main.GamePanel;
 import java.awt.*;
 
 public class Block {
-  public GamePanel gamePanel;
-  public final int tileSize = 32;
+  protected GamePanel gamePanel;
+  protected final int tileSize = 32;
 
-  public int x;
-  public int y;
-  public int width = tileSize;
-  public int height = tileSize;
+  protected int x;
+  protected int y;
+  protected int width = tileSize;
+  protected int height = tileSize;
 
-  public Image currentImage;
+  protected Image currentImage;
 
   public Block(GamePanel gamePanel, int x, int y) {
     this.gamePanel = gamePanel;
@@ -27,6 +27,10 @@ public class Block {
     this.y = y;
     this.width = width;
     this.height = height;
+  }
+
+  public Image getCurrentImage() {
+    return currentImage;
   }
 
   public int getX() {

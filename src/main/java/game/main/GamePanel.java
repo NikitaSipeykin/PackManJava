@@ -107,7 +107,8 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         else if (tileMapChar == 'P') {
           packMan = new PackMan(this, x, y, keyHandler);
-        } else if (tileMapChar == ' ') {
+        }
+        else if (tileMapChar == ' ') {
           Block food = new Block(this, x + 14, y + 14, 4, 4 );
           foods.add(food);
         }
@@ -121,14 +122,15 @@ public class GamePanel extends JPanel implements ActionListener {
   }
 
   private void draw(Graphics g) {
-    g.drawImage(packMan.currentImage, packMan.getX(), packMan.getY(), packMan.getWidth(), packMan.getHeight(), null);
+    g.drawImage(packMan.getCurrentImage(), packMan.getX(), packMan.getY(), packMan.getWidth(), packMan.getHeight(), null);
 
     for (Entity ghost : ghosts) {
-      g.drawImage(ghost.currentImage, ghost.getX(), ghost.getY(), ghost.getWidth(), ghost.getHeight(), null);
+      g.drawImage(ghost.getCurrentImage(), ghost.getX(), ghost.getY(), ghost.getWidth(), ghost.getHeight(), null);
     }
     for (Block wall : walls) {
-      g.drawImage(wall.currentImage, wall.getX(), wall.getY(), wall.getWidth(), wall.getHeight(), null);
+      g.drawImage(wall.getCurrentImage(), wall.getX(), wall.getY(), wall.getWidth(), wall.getHeight(), null);
     }
+
     g.setColor(Color.white);
     for (Block food : foods) {
       g.fillRect(food.getX(), food.getY(), food.getWidth(), food.getHeight());
@@ -158,10 +160,13 @@ public class GamePanel extends JPanel implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     packMan.move();
+
     for (Entity ghost : ghosts) {
       ghost.move();
     }
+
     repaint();
+
     if (gameOver){
       gameLoop.stop();
     }

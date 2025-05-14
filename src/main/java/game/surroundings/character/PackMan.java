@@ -64,6 +64,10 @@ public class PackMan extends Entity {
     x += velocityX;
     y += velocityY;
 
+    if (!canTurn){
+      updateDirection(failedDirection);
+    }
+
     for (Block wall : gamePanel.walls) {
       if (collision(this, wall) || this.getX() <= 0 || this.getX() + this.getWidth() >= gamePanel.borderWidth) {
         x -= velocityX;
