@@ -13,6 +13,7 @@ public class Block {
   protected int width = tileSize;
   protected int height = tileSize;
 
+  protected int score = 10;
   protected Image currentImage;
 
   public Block(GamePanel gamePanel, int x, int y) {
@@ -50,4 +51,8 @@ public class Block {
   }
 
   protected void setImage() {}
+
+  public int getScore() {
+    return score;
+  }
 }

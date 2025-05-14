@@ -6,6 +6,7 @@ import game.surroundings.Block;
 import game.surroundings.Entity;
 
 import javax.swing.*;
+import java.util.HashSet;
 
 public class PackMan extends Entity {
   KeyHandler keyHandler;
@@ -87,27 +88,23 @@ public class PackMan extends Entity {
       }
     }
 
-    Block foodEaten = null;
-    for (Block food : gamePanel.foods) {
-      if (collision(this, food)) {
-        foodEaten = food;
-        gamePanel.score += 10;
-      }
-    }
-
-    for (Block cherry :
-        gamePanel.cherrys) {
-      if (collision(this, cherry)){
-        foodEaten = cherry;
-        gamePanel.score += 50;
-      }
-    }
-    gamePanel.cherrys.remove(foodEaten);
-    gamePanel.foods.remove(foodEaten);
+    eatTheFood(gamePanel.foods);
+    eatTheFood(gamePanel.cherrys);
 
     if (gamePanel.foods.isEmpty()&& gamePanel.cherrys.isEmpty()){
       gamePanel.loadMap();
       gamePanel.resetPosition();
     }
+  }
+
+  private void eatTheFood(HashSet<Block> foodToCheck) {
+    Block foodEaten = null;
+    for (Block food : foodToCheck) {
+      if (collision(this, food)) {
+        foodEaten = food;
+        gamePanel.score += food.getScore();
+      }
+    }
+    foodToCheck.remove(foodEaten);
   }
 }

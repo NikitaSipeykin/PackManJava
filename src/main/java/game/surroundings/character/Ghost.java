@@ -10,6 +10,7 @@ public class Ghost extends Entity {
 
   public Ghost(GamePanel gamePanel, int x, int y, String color) {
     super(gamePanel, x, y);
+
     setColor(color);
   }
 

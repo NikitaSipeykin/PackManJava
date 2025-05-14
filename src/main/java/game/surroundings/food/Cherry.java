@@ -6,8 +6,10 @@ import game.surroundings.Block;
 import javax.swing.*;
 
 public class Cherry extends Block {
+
   public Cherry(GamePanel gamePanel, int x, int y) {
     super(gamePanel, x, y);
+    this.score = 50;
 
     setImage();
   }
