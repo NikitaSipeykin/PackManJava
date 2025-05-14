@@ -9,12 +9,14 @@ public class Entity extends Block{
   protected int startX;
   protected int startY;
   protected char direction = 'U';
+  protected char failedDirection;
   protected int velocityX = 0;
   protected int velocityY = 0;
 
-  public Random random = new Random();
+  protected Random random = new Random();
+  protected Image imageUp, imageDown, imageLeft, imageRight;
+  protected boolean canTurn = false;
 
-  public Image imageUp, imageDown, imageLeft, imageRight;
   public char[] directions = {'U', 'D', 'L', 'R'};
 
   public Entity(GamePanel gamePanel, int x, int y) {
@@ -29,15 +31,22 @@ public class Entity extends Block{
   public void updateDirection(char direction){
     char previousDirection = this.direction;
     this.direction = direction;
+
+    canTurn = true;
+    changeSprite(this.direction);
     updateVelocity();
     this.x += this.velocityX;
     this.y += this.velocityY;
+
     for (Block wall : gamePanel.walls) {
       if (collision(this, wall)){
         this.x -= this.velocityX;
         this.y -= this.velocityY;
 
+        canTurn = false;
+        failedDirection = this.direction;
         this.direction = previousDirection;
+        changeSprite(this.direction);
         updateVelocity();
       }
     }
@@ -64,13 +73,6 @@ public class Entity extends Block{
     this.y = this.startY;
   }
 
-  public boolean collision(Entity a, Entity b){
-    return a.getX() < b.getX() + b.getWidth() &&
-        a.getX() + a.getWidth() > b.getX() &&
-        a.getY() < b.getY() + b.getHeight() &&
-        a.getY() + a.getHeight() > b.getY();
-  }
-
   public boolean collision(Entity a, Block b){
     return a.getX() < b.getX() + b.getWidth() &&
         a.getX() + a.getWidth() > b.getX() &&
@@ -78,29 +80,19 @@ public class Entity extends Block{
         a.getY() + a.getHeight() > b.getY();
   }
 
-  public int getVelocityX() {
-    return velocityX;
-  }
-
   public void setVelocityX(int velocityX) {
     this.velocityX = velocityX;
-  }
-
-  public int getVelocityY() {
-    return velocityY;
   }
 
   public void setVelocityY(int velocityY) {
     this.velocityY = velocityY;
   }
 
-  public char getDirection() {
-    return direction;
-  }
-
   public void update(){}
 
   public void move(){}
+
+  protected void changeSprite(char direction) {}
 
   public int randomDirection(){
     return random.nextInt(4);
