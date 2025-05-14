@@ -5,6 +5,7 @@ import game.surroundings.Entity;
 import game.surroundings.character.Ghost;
 import game.surroundings.character.PackMan;
 import game.surroundings.food.Cherry;
+import game.surroundings.food.PowerFood;
 import game.surroundings.tile.Wall;
 
 import javax.swing.*;
@@ -14,27 +15,30 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 
 public class GamePanel extends JPanel implements ActionListener {
+  KeyHandler keyHandler = new KeyHandler(this);
+  Timer gameLoop;
+
   private final int rowCount = 21;
   private final int colCount = 19;
-
   public final int tileSize = 32;
   public final int borderWidth = colCount * tileSize;
   public final int borderHeight = rowCount * tileSize;
 
+  public int score = 0;
+  public int lives = 3;
+
+  public boolean gameOver = false;
+  public boolean isPowerTime = false;
+
+  private int powerTimeCounter = 0;
+
   public HashSet<Block> walls;
   public HashSet<Block> foods;
   public HashSet<Block> cherrys;
+  public HashSet<Block> powerFoods;
   public HashSet<Entity> ghosts;
 
   public PackMan packMan;
-
-  Timer gameLoop;
-  KeyHandler keyHandler = new KeyHandler(this);
-
-  public int score = 0;
-  public int lives = 3;
-  public boolean gameOver = false;
-
   //X = wall, O = skip, P = pac man, ' ' = food
   //Ghosts: b = blue, o = orange, p = pink, r = red
   private final String[] tileMap = {
@@ -45,7 +49,7 @@ public class GamePanel extends JPanel implements ActionListener {
       "X XX X XXXXX X XX X",
       "X    X       X    X",
       "XXXX XXXX XXXX XXXX",
-      "OOOX X       X XOOO",
+      "OOOX X   S   X XOOO",
       "XXXX X XXrXX X XXXX",
       "T       bpo       T",
       "XXXX X XXXXX X XXXX",
@@ -80,6 +84,7 @@ public class GamePanel extends JPanel implements ActionListener {
     walls = new HashSet<Block>();
     foods = new HashSet<Block>();
     cherrys = new HashSet<Block>();
+    powerFoods = new HashSet<Block>();
     ghosts = new HashSet<Entity>();
 
 
@@ -117,6 +122,10 @@ public class GamePanel extends JPanel implements ActionListener {
           Block cherry = new Cherry(this, x, y);
           cherrys.add(cherry);
         }
+        else if (tileMapChar == 'S') {
+          Block powerFood = new PowerFood(this, x, y);
+          powerFoods.add(powerFood);
+        }
         else if (tileMapChar == ' ') {
           Block food = new Block(this, x + 14, y + 14, 4, 4 );
           foods.add(food);
@@ -147,6 +156,9 @@ public class GamePanel extends JPanel implements ActionListener {
     for (Block cherry : cherrys) {
       g.drawImage(cherry.getCurrentImage(), cherry.getX(), cherry.getY(), cherry.getWidth(), cherry.getHeight(), null);
     }
+    for (Block powerFood : powerFoods) {
+      g.drawImage(powerFood.getCurrentImage(), powerFood.getX(), powerFood.getY(), powerFood.getWidth(), powerFood.getHeight(), null);
+    }
 
     g.setFont(new Font("Arial", Font.PLAIN, 18));
     if (gameOver){
@@ -172,9 +184,21 @@ public class GamePanel extends JPanel implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     packMan.move();
+    if (isPowerTime){
+      powerTimeCounter++;
+    }
 
     for (Entity ghost : ghosts) {
       ghost.move();
+    }
+
+    if (powerTimeCounter == 600){
+      isPowerTime = false;
+      powerTimeCounter = 0;
+
+      for (Entity ghost : ghosts) {
+        ghost.setDefaultImage();
+      }
     }
 
     repaint();

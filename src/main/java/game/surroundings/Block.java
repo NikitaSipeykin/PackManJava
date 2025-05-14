@@ -16,6 +16,8 @@ public class Block {
   protected int score = 10;
   protected Image currentImage;
 
+  protected boolean isPowerFood = false;
+
   public Block(GamePanel gamePanel, int x, int y) {
     this.gamePanel = gamePanel;
     this.x = x;
@@ -54,5 +56,9 @@ public class Block {
 
   public int getScore() {
     return score;
+  }
+
+  public boolean isPowerFood() {
+    return isPowerFood;
   }
 }

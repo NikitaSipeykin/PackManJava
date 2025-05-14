@@ -82,18 +82,22 @@ public class PackMan extends Entity {
     }
 
     for (Entity ghost : gamePanel.ghosts) {
-      if (collision(ghost, this)){
+      if (collision(ghost, this) && !gamePanel.isPowerTime){
         gamePanel.lives --;
         if (gamePanel.lives == 0){
           gamePanel.gameOver = true;
           return;
         }
         gamePanel.resetPosition();
+      } else if (collision(ghost, this) && gamePanel.isPowerTime) {
+        gamePanel.score += ghost.getScore();
+        ghost.reset();
       }
     }
 
     eatTheFood(gamePanel.foods);
     eatTheFood(gamePanel.cherrys);
+    eatTheFood(gamePanel.powerFoods);
 
     if (gamePanel.foods.isEmpty()&& gamePanel.cherrys.isEmpty()){
       gamePanel.loadMap();
@@ -107,6 +111,9 @@ public class PackMan extends Entity {
       if (collision(this, food)) {
         foodEaten = food;
         gamePanel.score += food.getScore();
+        if (food.isPowerFood()){
+          gamePanel.isPowerTime = true;
+        }
       }
     }
     foodToCheck.remove(foodEaten);
