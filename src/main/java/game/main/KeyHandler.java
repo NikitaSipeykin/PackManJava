@@ -12,9 +12,7 @@ public class KeyHandler implements KeyListener {
   }
 
   @Override
-  public void keyTyped(KeyEvent e) {
-
-  }
+  public void keyTyped(KeyEvent e) {}
 
   @Override
   public void keyPressed(KeyEvent e) {
@@ -26,6 +24,7 @@ public class KeyHandler implements KeyListener {
       gp.gameOver = false;
       gp.gameLoop.start();
     }
+
     if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W){
       upPressed = true;
       gp.packMan.update();

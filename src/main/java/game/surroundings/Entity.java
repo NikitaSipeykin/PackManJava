@@ -97,4 +97,6 @@ public class Entity extends Block{
   public int randomDirection(){
     return random.nextInt(4);
   }
+
+  public void setDefaultImage(){}
 }

@@ -5,25 +5,36 @@ import game.surroundings.Block;
 import game.surroundings.Entity;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Ghost extends Entity {
+  private Image scaredGhost;
+  private Image ghostImage;
 
   public Ghost(GamePanel gamePanel, int x, int y, String color) {
     super(gamePanel, x, y);
+    this.score = 100;
+
     setColor(color);
   }
 
   private void setColor(String color){
     switch (color) {
-      case "red" -> currentImage = new ImageIcon(getClass().getResource("/enemy/redGhost.png")).getImage();
-      case "orange" -> currentImage = new ImageIcon(getClass().getResource("/enemy/orangeGhost.png")).getImage();
-      case "pink" -> currentImage = new ImageIcon(getClass().getResource("/enemy/pinkGhost.png")).getImage();
-      case "blue" -> currentImage = new ImageIcon(getClass().getResource("/enemy/blueGhost.png")).getImage();
+      case "red" -> ghostImage = new ImageIcon(getClass().getResource("/enemy/redGhost.png")).getImage();
+      case "orange" -> ghostImage = new ImageIcon(getClass().getResource("/enemy/orangeGhost.png")).getImage();
+      case "pink" -> ghostImage = new ImageIcon(getClass().getResource("/enemy/pinkGhost.png")).getImage();
+      case "blue" -> ghostImage = new ImageIcon(getClass().getResource("/enemy/blueGhost.png")).getImage();
     }
+    currentImage = ghostImage;
+    scaredGhost = new ImageIcon(getClass().getResource("/enemy/scaredGhost.png")).getImage();
   }
 
   @Override
   public void move(){
+    if (gamePanel.isPowerTime){
+      currentImage = scaredGhost;
+    }
+
     x += velocityX;
     y += velocityY;
 
@@ -40,5 +51,9 @@ public class Ghost extends Entity {
         break;
       }
     }
+  }
+
+  public void setDefaultImage(){
+    currentImage = ghostImage;
   }
 }

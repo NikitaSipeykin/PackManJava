@@ -6,6 +6,7 @@ import game.surroundings.Block;
 import game.surroundings.Entity;
 
 import javax.swing.*;
+import java.util.HashSet;
 
 public class PackMan extends Entity {
   KeyHandler keyHandler;
@@ -69,36 +70,52 @@ public class PackMan extends Entity {
     }
 
     for (Block wall : gamePanel.walls) {
-      if (collision(this, wall) || this.getX() <= 0 || this.getX() + this.getWidth() >= gamePanel.borderWidth) {
+      if (collision(this, wall) ) {
         x -= velocityX;
         y -= velocityY;
         break;
+      } else if ( this.getX() <= 0 && direction == 'L') {
+        x = gamePanel.borderWidth;
+      } else if (this.getX() + this.getWidth() >= gamePanel.borderWidth && direction == 'R') {
+        x = 0;
       }
     }
 
     for (Entity ghost : gamePanel.ghosts) {
-      if (collision(ghost, this)){
+      if (collision(ghost, this) && !gamePanel.isPowerTime){
         gamePanel.lives --;
         if (gamePanel.lives == 0){
           gamePanel.gameOver = true;
           return;
         }
         gamePanel.resetPosition();
+      } else if (collision(ghost, this) && gamePanel.isPowerTime) {
+        gamePanel.score += ghost.getScore();
+        ghost.reset();
       }
     }
 
-    Block foodEaten = null;
-    for (Block food : gamePanel.foods) {
-      if (collision(this, food)) {
-        foodEaten = food;
-        gamePanel.score += 10;
-      }
-    }
-    gamePanel.foods.remove(foodEaten);
+    eatTheFood(gamePanel.foods);
+    eatTheFood(gamePanel.cherrys);
+    eatTheFood(gamePanel.powerFoods);
 
-    if (gamePanel.foods.isEmpty()){
+    if (gamePanel.foods.isEmpty()&& gamePanel.cherrys.isEmpty()){
       gamePanel.loadMap();
       gamePanel.resetPosition();
     }
+  }
+
+  private void eatTheFood(HashSet<Block> foodToCheck) {
+    Block foodEaten = null;
+    for (Block food : foodToCheck) {
+      if (collision(this, food)) {
+        foodEaten = food;
+        gamePanel.score += food.getScore();
+        if (food.isPowerFood()){
+          gamePanel.isPowerTime = true;
+        }
+      }
+    }
+    foodToCheck.remove(foodEaten);
   }
 }
