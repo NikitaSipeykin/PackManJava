@@ -70,10 +70,14 @@ public class PackMan extends Entity {
     }
 
     for (Block wall : gamePanel.walls) {
-      if (collision(this, wall) || this.getX() <= 0 || this.getX() + this.getWidth() >= gamePanel.borderWidth) {
+      if (collision(this, wall) ) {
         x -= velocityX;
         y -= velocityY;
         break;
+      } else if ( this.getX() <= 0 && direction == 'L') {
+        x = gamePanel.borderWidth;
+      } else if (this.getX() + this.getWidth() >= gamePanel.borderWidth && direction == 'R') {
+        x = 0;
       }
     }
 

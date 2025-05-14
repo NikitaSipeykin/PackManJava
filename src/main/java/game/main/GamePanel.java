@@ -47,7 +47,7 @@ public class GamePanel extends JPanel implements ActionListener {
       "XXXX XXXX XXXX XXXX",
       "OOOX X       X XOOO",
       "XXXX X XXrXX X XXXX",
-      "O       bpo       O",
+      "T       bpo       T",
       "XXXX X XXXXX X XXXX",
       "OOOX X       X XOOO",
       "XXXX X XXXXX X XXXX",
